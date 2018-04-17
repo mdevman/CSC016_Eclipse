@@ -1,0 +1,6 @@
+19:43:19 **** Incremental Build of configuration Debug for project recTest ****
+make all 
+make: Nothing to be done for `all'.
+
+19:43:19 Build Finished (took 70ms)
+
