@@ -15,7 +15,7 @@ int main()
 
   // explicit constructor with num of digits
   string str1 = "3452552";
-  BigInt bi1(10, str1);
+  BigInt bi1(str1);
   cout << "bi1 = ";
 	bi1.displayArray();
   // copy constructors
@@ -40,9 +40,10 @@ int main()
 	//cout << "bi5 > bi2 -> " << (bi5 > bi2) << endl;
 
   // IO operations
+	cout << "Please enter a value for bi2 : " << endl;
   cin >> bi2;
 	cout << "cin>>bi2 = " << endl;
-  	cout << "bi2 = ";
+  	//cout << "bi2 = ";
 	bi2.displayArray();
 	cout << "cout << bi1 ... ";
   cout << bi1;
@@ -80,6 +81,15 @@ int main()
 	cout << "bi2 = ";
     cout<<bi2;
   }
+
+	cout << "bi1 = ";
+	bi1.displayArray();
+	cout << " * " << endl;
+	cout << "bi2 = ";
+	bi2.displayArray();
+  BigInt bi7 = bi1 * bi2;
+	bi7.displayArray();
+
 	//~bi1;
 	//~bi2;
 	//~bi3;

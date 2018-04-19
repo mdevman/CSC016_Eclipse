@@ -108,3 +108,101 @@ java.io.FileNotFoundException: /home/opnmpd/eclipse-workspace/BigInt/Debug/BigIn
 
 !ENTRY org.eclipse.core.jobs 2 2 2018-04-17 02:00:16.157
 !MESSAGE Job found still running after platform shutdown.  Jobs should be canceled by the plugin that scheduled them during shutdown: org.eclipse.cdt.dsf.gdb.internal.ui.console.GdbBasicCliConsole$InputReadJob
+!SESSION 2018-04-18 19:50:05.520 -----------------------------------------------
+eclipse.buildId=4.7.1.M20170906-1700
+java.version=1.8.0_141
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.cpp.product
+Command-line arguments:  -os linux -ws gtk -arch x86_64 -product org.eclipse.epp.package.cpp.product
+
+!ENTRY org.eclipse.launchbar.core 2 0 2018-04-18 20:17:28.345
+!MESSAGE Enablement expression is missing for descriptor type org.eclipse.cdt.debug.core.coreBuildDescriptorType
+
+!ENTRY org.eclipse.launchbar.core 2 0 2018-04-18 20:17:28.362
+!MESSAGE Enablement expression is missing for config provider for org.eclipse.cdt.debug.core.coreBuildDescriptorType
+
+!ENTRY org.eclipse.cdt.codan.core.cxx 4 1 2018-04-19 00:08:25.428
+!MESSAGE Unsupported statement type: CPPASTCaseStatement.
+
+!ENTRY org.eclipse.cdt.codan.core.cxx 4 1 2018-04-19 00:08:25.444
+!MESSAGE Unsupported statement type: CPPASTCaseStatement.
+
+!ENTRY org.eclipse.cdt.codan.core.cxx 4 1 2018-04-19 00:31:51.191
+!MESSAGE Unsupported statement type: CPPASTCaseStatement.
+
+!ENTRY org.eclipse.cdt.codan.core.cxx 4 1 2018-04-19 00:31:51.194
+!MESSAGE Unsupported statement type: CPPASTCaseStatement.
+
+!ENTRY org.eclipse.cdt.codan.core.cxx 4 1 2018-04-19 00:31:57.248
+!MESSAGE Unsupported statement type: CPPASTCaseStatement.
+
+!ENTRY org.eclipse.cdt.codan.core.cxx 4 1 2018-04-19 00:31:57.251
+!MESSAGE Unsupported statement type: CPPASTCaseStatement.
+
+!ENTRY org.eclipse.cdt.codan.core.cxx 4 1 2018-04-19 00:32:00.809
+!MESSAGE Unsupported statement type: CPPASTCaseStatement.
+
+!ENTRY org.eclipse.cdt.codan.core.cxx 4 1 2018-04-19 00:32:00.812
+!MESSAGE Unsupported statement type: CPPASTCaseStatement.
+
+!ENTRY org.eclipse.cdt.codan.core.cxx 4 1 2018-04-19 00:32:24.884
+!MESSAGE Unsupported statement type: CPPASTCaseStatement.
+
+!ENTRY org.eclipse.cdt.codan.core.cxx 4 1 2018-04-19 00:32:24.887
+!MESSAGE Unsupported statement type: CPPASTCaseStatement.
+
+!ENTRY org.eclipse.cdt.codan.core.cxx 4 1 2018-04-19 00:32:27.438
+!MESSAGE Unsupported statement type: CPPASTCaseStatement.
+
+!ENTRY org.eclipse.cdt.codan.core.cxx 4 1 2018-04-19 00:32:27.441
+!MESSAGE Unsupported statement type: CPPASTCaseStatement.
+
+!ENTRY org.eclipse.cdt.codan.core.cxx 4 1 2018-04-19 00:32:31.492
+!MESSAGE Unsupported statement type: CPPASTCaseStatement.
+
+!ENTRY org.eclipse.cdt.codan.core.cxx 4 1 2018-04-19 00:32:31.494
+!MESSAGE Unsupported statement type: CPPASTCaseStatement.
+
+!ENTRY org.eclipse.cdt.codan.core.cxx 4 1 2018-04-19 00:32:34.545
+!MESSAGE Unsupported statement type: CPPASTCaseStatement.
+
+!ENTRY org.eclipse.cdt.codan.core.cxx 4 1 2018-04-19 00:32:34.548
+!MESSAGE Unsupported statement type: CPPASTCaseStatement.
+
+!ENTRY org.eclipse.cdt.codan.core.cxx 4 1 2018-04-19 00:33:20.123
+!MESSAGE Unsupported statement type: CPPASTCaseStatement.
+
+!ENTRY org.eclipse.cdt.codan.core.cxx 4 1 2018-04-19 00:33:20.125
+!MESSAGE Unsupported statement type: CPPASTCaseStatement.
+
+!ENTRY org.eclipse.cdt.codan.core.cxx 4 1 2018-04-19 00:33:37.697
+!MESSAGE Unsupported statement type: CPPASTCaseStatement.
+
+!ENTRY org.eclipse.cdt.codan.core.cxx 4 1 2018-04-19 00:33:37.699
+!MESSAGE Unsupported statement type: CPPASTCaseStatement.
+
+!ENTRY org.eclipse.cdt.codan.core.cxx 4 1 2018-04-19 00:34:23.773
+!MESSAGE Unsupported statement type: CPPASTCaseStatement.
+
+!ENTRY org.eclipse.cdt.codan.core.cxx 4 1 2018-04-19 00:34:23.776
+!MESSAGE Unsupported statement type: CPPASTCaseStatement.
+
+!ENTRY org.eclipse.cdt.codan.core.cxx 4 1 2018-04-19 00:34:24.824
+!MESSAGE Unsupported statement type: CPPASTCaseStatement.
+
+!ENTRY org.eclipse.cdt.codan.core.cxx 4 1 2018-04-19 00:34:24.828
+!MESSAGE Unsupported statement type: CPPASTCaseStatement.
+!SESSION 2018-04-19 02:34:31.095 -----------------------------------------------
+eclipse.buildId=4.7.1.M20170906-1700
+java.version=1.8.0_141
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.cpp.product
+Command-line arguments:  -os linux -ws gtk -arch x86_64 -product org.eclipse.epp.package.cpp.product
+
+!ENTRY org.eclipse.launchbar.core 2 0 2018-04-19 02:38:22.137
+!MESSAGE Enablement expression is missing for descriptor type org.eclipse.cdt.debug.core.coreBuildDescriptorType
+
+!ENTRY org.eclipse.launchbar.core 2 0 2018-04-19 02:38:22.147
+!MESSAGE Enablement expression is missing for config provider for org.eclipse.cdt.debug.core.coreBuildDescriptorType

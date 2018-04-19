@@ -10,10 +10,17 @@ BigInt::BigInt(const std::string &str)
 	m_String = str;
    allocateDigitArray(str.size(),false);
    //cout<<"In constructor body for str, after allocate"<<endl;
-   initializeDigitArray(str.size(), true);
+   initializeDigitArray(str);
    //cout<<"In constructor body for str after initialize"<<endl;
 }
 
+BigInt::BigInt(unsigned int numOfDigits)
+{
+   //cout<<"In default constructor body"<<endl;
+   allocateDigitArray(numOfDigits, true);
+}
+
+/*
 BigInt::BigInt(unsigned int numOfDigits, const std::string &str)
 {
    //cout<<"In default constructor body"<<endl;
@@ -21,6 +28,7 @@ BigInt::BigInt(unsigned int numOfDigits, const std::string &str)
    allocateDigitArray(numOfDigits, false);
    initializeDigitArray(str.size(), true);
 }
+*/
 
 BigInt::BigInt(const BigInt &bi)
 {
@@ -68,39 +76,36 @@ void BigInt::allocateDigitArray(unsigned int numOfDigits, bool init)
    }
 }
 
-void BigInt::initializeDigitArray(unsigned int numOfDigits, bool blHasString)
+void BigInt::initializeDigitArray(const std::string &str)
 {
 	m_numDigits = 0;
    //cout<<"In initialize"<<endl;
-	if (blHasString)
+	//cout<<"Has String"<<endl;
+   for(unsigned int i = 0; i < str.size(); i++)
+   {
+	//cout<<"In For"<<endl;
+	if (i == 0)
 	{
-   		//cout<<"Has String"<<endl;
-	   for(unsigned int i = 0; i < numOfDigits; i++)
-	   {
-   		//cout<<"In For"<<endl;
-		if (i == 0)
+		if (m_String[i] == '-')
 		{
-			if (m_String[i] == '-')
-			{
-				m_isPositive = false;
-				break;
-			}
-			else
-			{
-				m_isPositive = true;
-			}
+			m_isPositive = false;
+			break;
 		}
-		if (isdigit(m_String[i]))
+		else
 		{
-		 	m_digitArray[i] = m_String[i];
-			m_numDigits = m_numDigits + 1;
+			m_isPositive = true;
 		}
-		   //cout<<"m_isPositive  = "<< m_isPositive <<endl;
-		   //cout<<"m_digitArray[i] = "<< m_digitArray[i] <<endl;
-		   //cout<<"i = "<< i <<endl;
-		   //cout<<"numOfDigits = "<< numOfDigits <<endl;
-	   }
 	}
+	if (isdigit(m_String[i]))
+	{
+		m_digitArray[i] = m_String[i];
+		m_numDigits = m_numDigits + 1;
+	}
+	   //cout<<"m_isPositive  = "<< m_isPositive <<endl;
+	   //cout<<"m_digitArray[i] = "<< m_digitArray[i] <<endl;
+	   //cout<<"i = "<< i <<endl;
+	   //cout<<"numOfDigits = "<< numOfDigits <<endl;
+   }
 }
 
 void BigInt::freeDigitArray()
@@ -206,6 +211,8 @@ bool BigInt::operator==(const BigInt& rhs) const
 	}
 	else
 	{
+		blRetVal = true;
+
 		for (int i = 0; i < rhsEnd; i++)
 		{
 			if (this->m_digitArray[i] < rhs.m_digitArray[i])
@@ -213,14 +220,12 @@ bool BigInt::operator==(const BigInt& rhs) const
 				//return false;
 				blRetVal = false;
 				break;
-			} else if (this->m_digitArray[i] > rhs.m_digitArray[i])
+			}
+
+			if (this->m_digitArray[i] > rhs.m_digitArray[i])
 			{
 				//return true;
 				blRetVal = false;
-				break;
-			} else
-			{
-				blRetVal = true;
 				break;
 			}
 		}
@@ -241,7 +246,9 @@ BigInt BigInt::operator + (const BigInt &rhs) const
 	int intNum1 = 0;
 	int intNum2 = 0;
 	int intTotal = 0;
+	int intLeftOver = 0;
 
+	//Determine how many digits are in this
 	for(unsigned int i = 0; i < this->m_digitArraySize; i++)
 	{
 		if (isdigit(this->m_digitArray[i]))
@@ -250,8 +257,10 @@ BigInt BigInt::operator + (const BigInt &rhs) const
 		}
 	}
 
+	//subtract 1 to make lhsEnd useful for iterating
 	lhsEnd = lhsEnd - 1;
 
+	//Determine how many digits are in rhs
 	for(int i = 0; i < rhs.getSize(); i++)
 	{
 		if (isdigit(rhs.m_digitArray[i]))
@@ -260,6 +269,7 @@ BigInt BigInt::operator + (const BigInt &rhs) const
 		}
 	}
 
+	//subtract 1 to make lhsEnd useful for iterating
 	rhsEnd = rhsEnd - 1;
 
 
@@ -281,7 +291,7 @@ BigInt BigInt::operator + (const BigInt &rhs) const
 		smallEnd = bigEnd = lhsEnd;
 	}
 
-	resEnd = bigEnd + 1;
+	resEnd = bigEnd + 2;
 	int intCarry = 0;
 	BigInt res(resEnd);
 	resEnd = resEnd - 1;
@@ -297,11 +307,11 @@ BigInt BigInt::operator + (const BigInt &rhs) const
 
 	if (!rhs.m_isPositive && this->m_isPositive)
 	{
-
+		res = *this - rhs;
 	}
 	else if (rhs.m_isPositive && !this->m_isPositive)
 	{
-
+		res = rhs - *this;
 	}
 	else
 	{
@@ -346,38 +356,48 @@ BigInt BigInt::operator + (const BigInt &rhs) const
 			rhsEnd = rhsEnd - 1;
 		}
 
+		//resEnd = resEnd - 1;
+
 		switch(intWhichOne)
 		{
-			case 0 : res[0] = intCarry;
+			case 0 : res[0] = '0' + intCarry;
 							//cout<<"which 0 resEnd = " << resEnd << endl;
 							//cout<<"res[resEnd] = " << res[resEnd] << endl;
+							res[resEnd] = '0';
 							break;
 
-			case 1 : for (int j = rhsEnd; j >= 0; j--)
+			case 1 : for (int j = resEnd; j > 0; j--)
 						{
-							res[resEnd] = rhs[rhsEnd] + intCarry;
+							intLeftOver = rhs[rhsEnd];
+							intLeftOver = intLeftOver - 48;
+							res[resEnd] = '0' + (intLeftOver + intCarry);
 							//cout<<"which 1 resEnd = " << resEnd << endl;
 							//cout<<"res[resEnd] = " << res[resEnd] << endl;
 							resEnd = resEnd - 1;
 							rhsEnd = rhsEnd - 1;
 							intCarry = 0;
 						}
+						res[resEnd] = '0';
 						break;
 
-			case 2 : for (int j = lhsEnd; j >= 0; j--)
+			case 2 : for (int j = resEnd; j > 0; j--)
 						{
-							res[resEnd] = this->m_digitArray[lhsEnd] + intCarry;
+							intLeftOver = this->m_digitArray[lhsEnd];
+							intLeftOver = intLeftOver - 48;
+							res[resEnd] = '0' + (intLeftOver + intCarry);
+							//res[resEnd] = this->m_digitArray[lhsEnd] + intCarry;
 							//cout<<"which 2 resEnd = " << resEnd << endl;
 							//cout<<"res[resEnd] = " << res[resEnd] << endl;
 							resEnd = resEnd - 1;
 							lhsEnd = lhsEnd - 1;
 							intCarry = 0;
 						}
+						res[resEnd] = '0';
 						break;
 		}
 	}
 
-	res.displayArray();
+	//res.displayArray();
 	return res;
 }
 
@@ -395,7 +415,9 @@ BigInt BigInt::operator - (const BigInt &rhs) const
 	int intNum2 = 0;
 	int intTotal = 0;
 	int intCarry = 0;
+	int intLeftOver = 0;
 
+	//Determine how many digits are in this
 	for(unsigned int i = 0; i < this->m_digitArraySize; i++)
 	{
 		if (isdigit(this->m_digitArray[i]))
@@ -404,8 +426,10 @@ BigInt BigInt::operator - (const BigInt &rhs) const
 		}
 	}
 
+	//subtract 1 to make lhsEnd useful for iterating
 	lhsEnd = lhsEnd - 1;
 
+	//Determine how many digits are in rhs
 	for(int i = 0; i < rhs.getSize(); i++)
 	{
 		if (isdigit(rhs.m_digitArray[i]))
@@ -414,6 +438,7 @@ BigInt BigInt::operator - (const BigInt &rhs) const
 		}
 	}
 
+	//subtract 1 to make lhsEnd useful for iterating
 	rhsEnd = rhsEnd - 1;
 
 	if (rhsEnd > lhsEnd)
@@ -434,32 +459,49 @@ BigInt BigInt::operator - (const BigInt &rhs) const
 		smallEnd = bigEnd = lhsEnd;
 	}
 
-	resEnd = bigEnd + 1;
-	BigInt res(resEnd);
-	resEnd = resEnd - 1;
 
 	if (!rhs.m_isPositive && this->m_isPositive)
 	{
+		resEnd = bigEnd + 2;
+		BigInt res(resEnd);
+		resEnd = resEnd - 1;
 
+		res = *this + rhs;
+
+		res.displayArray();
+		return res;
 	}
 	else if (rhs.m_isPositive && !this->m_isPositive)
 	{
+		resEnd = bigEnd + 3;
+		BigInt res(resEnd);
+		resEnd = resEnd - 1;
 
+		res = *this + rhs;
+		res[0] = '-';
+
+		res.displayArray();
+		return res;
 	}
 	else
 	{
+		resEnd = bigEnd + 2;
+		BigInt res(resEnd);
+		resEnd = resEnd - 1;
 
 		switch(intWhichOne)
 		{
 			case 0 :
 				if (*this == rhs)
 				{
-					for (int j = rhsEnd; j >= 0; j--)
+					//Just fill the res array with zeroes
+					for (int j = resEnd; j >= 0; j--)
 					{
 						res[j] = '0';
 					}
 					break;
-				} else if (*this > rhs) //if lhs > rhs then lhs - rhs  result is positive
+				}
+				else if (*this > rhs) //if lhs > rhs then lhs - rhs  result is positive
 				{
 					for (int i = smallEnd; i >= 0; i--)
 					{
@@ -469,6 +511,15 @@ BigInt BigInt::operator - (const BigInt &rhs) const
 						intNum2 = rhs[rhsEnd];
 						intNum2 = intNum2 - 48;
 
+						if (intCarry == -1)
+						{
+							intNum1 = intNum1 + intCarry;
+							if (intNum1 == -1)
+							{
+								intNum1 = 9;
+							}
+						}
+
 						if (intNum1 < intNum2)
 						{
 							intNum1 = intNum1 + 10;
@@ -476,7 +527,14 @@ BigInt BigInt::operator - (const BigInt &rhs) const
 						}
 						else
 						{
-							intCarry = 0;
+							if (intNum1 == 9 && intCarry == -1)
+							{
+								intCarry = -1;
+							}
+							else
+							{
+								intCarry = 0;
+							}
 						}
 
 						intTotal = intNum1 - intNum2;
@@ -488,48 +546,73 @@ BigInt BigInt::operator - (const BigInt &rhs) const
 						rhsEnd = rhsEnd - 1;
 					}
 					break;
-				} else //if rhs > lhs then rhs - lhs  result is negative
+				}
+				else //if rhs > lhs then rhs - lhs  result is negative
 				{
 					for (int i = smallEnd; i >= 0; i--)
 					{
 						//Can't change the members of the array
-						intNum1 = this->m_digitArray[lhsEnd];
+						intNum1 = rhs[rhsEnd];
 						intNum1 = intNum1 - 48;
-						intNum2 = rhs[rhsEnd];
+						intNum2 = this->m_digitArray[lhsEnd];
 						intNum2 = intNum2 - 48;
 
-						if (intNum2 < intNum1)
+						if (intCarry == -1)
 						{
-							intNum2 = intNum2 + 10;
+							intNum1 = intNum1 + intCarry;
+							if (intNum1 == -1)
+							{
+								intNum1 = 9;
+							}
+						}
+
+						if (intNum1 < intNum2)
+						{
+							intNum1 = intNum1 + 10;
 							intCarry = -1;
 						}
 						else
 						{
-							intCarry = 0;
+							if (intNum1 == 9 && intCarry == -1)
+							{
+								intCarry = -1;
+							}
+							else
+							{
+								intCarry = 0;
+							}
 						}
 
-						intTotal = intNum2 - intNum1;
+						intTotal = intNum1 - intNum2;
 
-						res[bigEnd] = '0' + intTotal;
+						res[resEnd] = '0' + intTotal;
 
-						bigEnd = bigEnd - 1;
+						resEnd = resEnd - 1;
 						lhsEnd = lhsEnd - 1;
 						rhsEnd = rhsEnd - 1;
 					}
-
+					res[0] = '-';
+					break;
 				}
-				res[0] = '-';
-				break;
 
 			case 1 :
-				//if rhs > lhs then rhs - lhs  result is negative
+				//if rhs > lhs then rhs - lhs  result is negativefor (int i = smallEnd; i >= 0; i--)
 				for (int i = smallEnd; i >= 0; i--)
 				{
 					//Can't change the members of the array
-					intNum1 = this->m_digitArray[lhsEnd];
+					intNum1 = rhs[rhsEnd];
 					intNum1 = intNum1 - 48;
-					intNum2 = rhs[rhsEnd];
+					intNum2 = this->m_digitArray[lhsEnd];
 					intNum2 = intNum2 - 48;
+
+					if (intCarry == -1)
+					{
+						intNum1 = intNum1 + intCarry;
+						if (intNum1 == -1)
+						{
+							intNum1 = 9;
+						}
+					}
 
 					if (intNum1 < intNum2)
 					{
@@ -538,18 +621,25 @@ BigInt BigInt::operator - (const BigInt &rhs) const
 					}
 					else
 					{
-						intCarry = 0;
+						if (intNum1 == 9 && intCarry == -1)
+						{
+							intCarry = -1;
+						}
+						else
+						{
+							intCarry = 0;
+						}
 					}
 
 					intTotal = intNum1 - intNum2;
 
-					res[bigEnd] = '0' + intTotal;
+					res[resEnd] = '0' + intTotal;
 
-					bigEnd = bigEnd - 1;
+					resEnd = resEnd - 1;
 					lhsEnd = lhsEnd - 1;
 					rhsEnd = rhsEnd - 1;
 				}
-				res[0] = '-';
+				//res[0] = '-';
 				break;
 
 			case 2 :
@@ -562,6 +652,15 @@ BigInt BigInt::operator - (const BigInt &rhs) const
 					intNum2 = rhs[rhsEnd];
 					intNum2 = intNum2 - 48;
 
+					if (intCarry == -1)
+					{
+						intNum1 = intNum1 + intCarry;
+						if (intNum1 == -1)
+						{
+							intNum1 = 9;
+						}
+					}
+
 					if (intNum1 < intNum2)
 					{
 						intNum1 = intNum1 + 10;
@@ -569,7 +668,14 @@ BigInt BigInt::operator - (const BigInt &rhs) const
 					}
 					else
 					{
-						intCarry = 0;
+						if (intNum1 == 9 && intCarry == -1)
+						{
+							intCarry = -1;
+						}
+						else
+						{
+							intCarry = 0;
+						}
 					}
 
 					intTotal = intNum1 - intNum2;
@@ -583,34 +689,113 @@ BigInt BigInt::operator - (const BigInt &rhs) const
 				break;
 		}
 
-
 		switch(intWhichOne)
 		{
-			case 0 : res[0] = intCarry;
+			case 0 : res[0] = '0' + intCarry;
+							//cout<<"which 0 resEnd = " << resEnd << endl;
+							//cout<<"res[resEnd] = " << res[resEnd] << endl;
+							res[resEnd] = '0';
 							break;
 
-			case 1 : for (int j = rhsEnd; j >= 0; j--)
+			case 1 : for (int j = resEnd; j > 0; j--)
 						{
-							res[bigEnd] = rhs[rhsEnd] + intCarry;
-							bigEnd = bigEnd - 1;
+							intLeftOver = rhs[rhsEnd];
+							intLeftOver = intLeftOver - 48;
+							res[resEnd] = '0' + (intLeftOver + intCarry);
+							//cout<<"which 1 resEnd = " << resEnd << endl;
+							//cout<<"res[resEnd] = " << res[resEnd] << endl;
+							resEnd = resEnd - 1;
 							rhsEnd = rhsEnd - 1;
 							intCarry = 0;
 						}
+						res[resEnd] = '-';
 						break;
 
-			case 2 : for (int j = lhsEnd; j >= 0; j--)
+			case 2 : for (int j = bigEnd; j > 0; j--)
 						{
-							res[bigEnd] = this->m_digitArray[lhsEnd] + intCarry;
+							intLeftOver = this->m_digitArray[lhsEnd];
+							intLeftOver = intLeftOver - 48;
+							res[bigEnd] = '0' + (intLeftOver + intCarry);
+							//res[resEnd] = this->m_digitArray[lhsEnd] + intCarry;
+							//cout<<"which 2 bigEnd = " << bigEnd << endl;
+							//cout<<"res[bigEnd] = " << res[bigEnd] << endl;
 							bigEnd = bigEnd - 1;
 							lhsEnd = lhsEnd - 1;
 							intCarry = 0;
 						}
+						res[bigEnd] = '0';
 						break;
+		}
+
+		res.displayArray();
+		return res;
+	}
+}
+
+BigInt BigInt::operator * (const BigInt &rhs) const
+{
+	int bigEnd = 0;
+	int resEnd = 0;
+	int rhsEnd = 0;
+	int lhsEnd = 0;
+
+	//Determine how many digits are in this
+	for(unsigned int i = 0; i < this->m_digitArraySize; i++)
+	{
+		if (isdigit(this->m_digitArray[i]))
+		{
+			lhsEnd = lhsEnd + 1;
 		}
 	}
 
-	res.displayArray();
-	return res;
+	//subtract 1 to make lhsEnd useful for iterating
+	lhsEnd = lhsEnd - 1;
+
+	//Determine how many digits are in rhs
+	for(int i = 0; i < rhs.getSize(); i++)
+	{
+		if (isdigit(rhs.m_digitArray[i]))
+		{
+			rhsEnd = rhsEnd + 1;
+		}
+	}
+
+	//subtract 1 to make lhsEnd useful for iterating
+	rhsEnd = rhsEnd - 1;
+
+	if (rhsEnd > lhsEnd)
+	{
+		bigEnd = rhsEnd;
+	}
+	else if (rhsEnd < lhsEnd)
+	{
+		bigEnd = lhsEnd;
+	}
+	else
+	{
+		//Same size
+		bigEnd = lhsEnd;
+	}
+
+	resEnd = bigEnd + bigEnd + 4;
+	BigInt res(resEnd);
+	BigInt resTemp(resEnd);
+	resEnd = resEnd - 1;
+
+	BigInt biDecrementor(1);
+	biDecrementor[0] = '1';
+
+	BigInt biZero(1);
+	biZero[0] = '0';
+
+	for (; rhs > biZero; rhs - biDecrementor)
+	{
+		resTemp = res + *this;
+	}
+
+	resTemp.displayArray();
+	return resTemp;
+
 }
 
 

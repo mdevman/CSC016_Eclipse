@@ -7,7 +7,9 @@
 class BigInt
 {
 public:
-   BigInt(unsigned int numOfDigits=DefaultNumOfDigits, const std::string &str="");
+	//BigInt(unsigned int numOfDigits);
+	//BigInt(unsigned int numOfDigits=DefaultNumOfDigits, const std::string &str="");
+	BigInt(unsigned int numOfDigits=DefaultNumOfDigits);
    BigInt(const BigInt &bi);
    BigInt(const std::string &str);
    BigInt &operator =(const BigInt &bi);
@@ -34,7 +36,7 @@ public:
 private:
     // private utility functions
     void allocateDigitArray(unsigned int size, bool init=true);
-    void initializeDigitArray(unsigned int size, bool blHasString);
+    void initializeDigitArray(const std::string &str);
     void freeDigitArray();
     // A static class member is shared across all instances of the class.
     // It is allowed to declare and initialize static members in pre C++11!

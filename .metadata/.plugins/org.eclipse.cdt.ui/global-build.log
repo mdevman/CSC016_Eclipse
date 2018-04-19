@@ -1,9 +1,21 @@
-01:57:12 **** Incremental Build of configuration Debug for project BigInt ****
+02:36:22 **** Incremental Build of configuration Debug for project BigInt ****
+make all 
+Building file: ../src/main.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.cpp"
+Finished building: ../src/main.cpp
+ 
+Building target: BigInt
+Invoking: GCC C++ Linker
+g++  -o "BigInt"  ./src/BigInt.o ./src/main.o   
+Finished building target: BigInt
+ 
+02:36:26 **** Incremental Build of configuration Debug for project BigInt ****
 make all 
 make: Nothing to be done for `all'.
-01:57:20 **** Incremental Build of configuration Debug for project BigInt ****
+02:38:22 **** Incremental Build of configuration Debug for project BigInt ****
 make all 
 make: Nothing to be done for `all'.
-01:59:08 **** Incremental Build of configuration Debug for project BigInt ****
+02:39:09 **** Incremental Build of configuration Debug for project BigInt ****
 make all 
 make: Nothing to be done for `all'.
